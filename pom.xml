@@ -6,7 +6,7 @@
 
     <groupId>pl.npe</groupId>
     <artifactId>lpp2</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <properties>
         <powermock.version>1.5.5</powermock.version>

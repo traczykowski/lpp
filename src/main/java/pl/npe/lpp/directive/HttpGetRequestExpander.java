@@ -1,10 +1,12 @@
 package pl.npe.lpp.directive;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.DefaultHttpClient;
 import pl.npe.lpp.preprocessor.source.CannotReadFromFileException;
 import pl.npe.lpp.preprocessor.source.ProcessingContext;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -53,8 +56,14 @@ public class HttpGetRequestExpander extends AbstractExpander{
     String getResponse(HttpResponse response) throws IOException {
         StringWriter writer = new StringWriter();
         HttpEntity httpEntity = response.getEntity();
-        IOUtils.copy(httpEntity.getContent(), writer, httpEntity.getContentEncoding().getValue());
+        IOUtils.copy(httpEntity.getContent(), writer, getCharset(httpEntity).name());
         return writer.toString();
+    }
+
+    Charset getCharset(HttpEntity httpEntity){
+        ContentType contentType = ContentType.getOrDefault(httpEntity);
+        Charset charset = contentType.getCharset();
+        return charset != null ? charset : Charset.defaultCharset();
     }
 
 
