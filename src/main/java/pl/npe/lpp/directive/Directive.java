@@ -38,15 +38,19 @@ enum Directive {
         return expander.expand(params, context);
     }
 
-    public static Directive getByIdentifier(String identifier, ProcessingContext context) throws UnknownDirectiveException {      //todo ta metoda mogłą by usuwać znaki _ jeżeli takie by były
+    public static Directive getByIdentifier(String identifier, ProcessingContext context) throws UnknownDirectiveException {
         Directive[] values = Directive.values();
-        String id = identifier.toUpperCase();
+        String id = prepareId(identifier);
         for(Directive directive : values){
             if(id.equals(directive.identifier)){
                 return directive;
             }
         }
         throw new UnknownDirectiveException(context, "Unknown directive identifier: " + identifier);
+    }
+
+    private static String prepareId(String id){
+        return id.toUpperCase().replaceAll("_","");
     }
 
 }
