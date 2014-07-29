@@ -1,5 +1,7 @@
 package pl.npe.lpp.data.target;
 
+import pl.npe.lpp.preprocessor.LppParams;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,9 +23,9 @@ public class TexFileTarget implements TexTarget{
     }
 
     @Override
-    public boolean save(byte[] data) throws IOException {
+    public boolean save(byte[] data, LppParams params) throws IOException {
         if(Files.exists(targetPath)){
-            return handleExistingOutputFile(targetPath, data);
+            return handleExistingOutputFile(targetPath, data, params.isOverwrite());
         }else {
             Path output = Files.createFile(targetPath);
             Files.write(output, data);
@@ -35,8 +37,8 @@ public class TexFileTarget implements TexTarget{
         Files.write(dstPath, data, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
     }
 
-    boolean handleExistingOutputFile(Path dstPath, byte[] data) throws IOException {
-        if(choiceResolver.overwriteFile()){
+    boolean handleExistingOutputFile(Path dstPath, byte[] data, boolean overwrite) throws IOException {
+        if(overwrite || choiceResolver.overwriteFile()){
             write(dstPath, data);
             return true;
         }else {

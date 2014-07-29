@@ -29,7 +29,7 @@ public class Lpp {
         try {
             ProcessingContext context = new ProcessingContext.Builder(params).build();
             String processedData = processor.processSource(context, lineProcessorFactory.build());
-            return params.getTexTarget().save(processedData.getBytes(charset));
+            return params.getTexTarget().save(processedData.getBytes(charset), params);
         } catch (IOException e) {
             logger.info("Cannot create output file");
             return false;

@@ -60,7 +60,7 @@ public class LppTest extends Lpp {
     public void testPreprocessSuccess() throws Exception {
         when(sourceProcessorFactoryMock.build()).thenReturn(sourceProcessorMock);
         when(sourceProcessorMock.processSource(any(ProcessingContext.class), any(LineProcessor.class))).thenReturn("");
-        when(texTargetMock.save(eq(new byte[0]))).thenReturn(true);
+        when(texTargetMock.save(eq(new byte[0]), eq(lppParams))).thenReturn(true);
         assertTrue(super.preprocess(lppParams));
     }
 

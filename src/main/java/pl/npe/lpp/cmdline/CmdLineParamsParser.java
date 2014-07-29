@@ -40,6 +40,7 @@ class CmdLineParamsParser {
         return new LppParams.Builder(texSource, texTarget)
                 .charset(charset)
                 .flags(getFlags(line))
+                .overwrite(isOverwrite(line))
                 .build();
     }
 
@@ -87,6 +88,11 @@ class CmdLineParamsParser {
             return new HashSet<>(Arrays.asList(flags));
         }
     }
+
+    boolean isOverwrite(CommandLine commandLine){
+        return commandLine.hasOption(LppOption.OVERWRITE.getOptionName());
+    }
+
 
     boolean isRootFileValid(Path path){
         return Files.exists(path) && Files.isReadable(path) && !Files.isDirectory(path);

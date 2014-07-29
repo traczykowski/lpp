@@ -1,5 +1,7 @@
 package pl.npe.lpp.data.target;
 
+import pl.npe.lpp.preprocessor.LppParams;
+
 import java.io.IOException;
 
 /**
@@ -10,5 +12,5 @@ import java.io.IOException;
  */
 public interface TexTarget {
 
-    boolean save(byte[] data) throws IOException;
+    boolean save(byte[] data, LppParams params) throws IOException;
 }

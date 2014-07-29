@@ -7,8 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import pl.npe.lpp.cmdline.CmdLineParamsParser;
-import pl.npe.lpp.cmdline.LppOption;
 import pl.npe.lpp.preprocessor.LppParams;
 
 import java.nio.charset.Charset;
@@ -151,5 +149,17 @@ public class CmdLineParamsParserTest {
         Path expected = Paths.get("custom_file.tex");
         when(commandLine.getOptionValue(LppOption.OUTPUT_FILE.getOptionName())).thenReturn(expected.toFile().toString());
         assertEquals(expected.toAbsolutePath(), parser.getTargetFile(commandLine, FILE_PATH));
+    }
+
+    @Test
+    public void testIsOverwriteTrue() throws Exception {
+        when(commandLine.hasOption(LppOption.OVERWRITE.getOptionName())).thenReturn(true);
+        assertTrue(parser.isOverwrite(commandLine));
+    }
+
+    @Test
+    public void testIsOverwriteFalse() throws Exception {
+        when(commandLine.hasOption(LppOption.OVERWRITE.getOptionName())).thenReturn(false);
+        assertFalse(parser.isOverwrite(commandLine));
     }
 }

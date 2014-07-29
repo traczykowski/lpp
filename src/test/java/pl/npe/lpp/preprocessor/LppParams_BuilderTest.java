@@ -38,10 +38,12 @@ public class LppParams_BuilderTest {
         builder.charset(Charset.forName(charset));
         Set<String> flags = new HashSet<>(Arrays.asList("flag1", "flag2"));
         builder.flags(flags);
+        builder.overwrite(true);
         LppParams params = builder.build();
         assertEquals(texSourceMock, params.getTexSource());
         assertEquals(texTargetMock, params.getTexTarget());
         assertEquals(charset, params.getCharset().name());
         assertEquals(flags, params.getFlags());
+        assertTrue(params.isOverwrite());
     }
 }

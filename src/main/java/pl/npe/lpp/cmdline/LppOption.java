@@ -56,6 +56,16 @@ enum LppOption {
                     .withDescription("Output file with preprocessed LaTeX content")
                     .create(getOptionName());
         }
+    },
+    OVERWRITE("overwrite"){
+        @Override
+        @SuppressWarnings("AccessStaticViaInstance")
+        Option buildOption() {
+            return OptionBuilder
+                    .hasArg(false)
+                    .withDescription("Overwrites existing output file")
+                    .create(getOptionName());
+        }
     };
 
     LppOption(String optionName) {

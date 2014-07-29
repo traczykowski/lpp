@@ -23,6 +23,8 @@ public class LppParams {
 
     private Set<String> flags;
 
+    private boolean overwrite;
+
     private LppParams() {
 
     }
@@ -47,6 +49,10 @@ public class LppParams {
         }
     }
 
+    public boolean isOverwrite() {
+        return overwrite;
+    }
+
     public static class Builder{
 
         private final LppParams params;
@@ -64,6 +70,11 @@ public class LppParams {
 
         public Builder flags(Set<String> flags){
             params.flags = flags;
+            return this;
+        }
+
+        public Builder overwrite(boolean overwrite){
+            params.overwrite = overwrite;
             return this;
         }
 

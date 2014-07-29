@@ -5,8 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import pl.npe.lpp.preprocessor.LppParams;
 
 
 import java.nio.file.Files;
@@ -26,12 +28,15 @@ import static org.mockito.Mockito.*;
  * Date: 07.06.14
  * Time: 12:30
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Scanner.class)
+@RunWith(MockitoJUnitRunner.class)
+//@PrepareForTest(Scanner.class)
 public class TexFileTargetTest extends TexFileTarget {
 
     @Mock
     private UserChoiceResolver choiceResolverMock;
+
+    @Mock
+    private LppParams lppParams;
 
     private static final Path RESULT_PATH = Paths.get("texwritertest.tex.lpp");
 
@@ -54,26 +59,37 @@ public class TexFileTargetTest extends TexFileTarget {
     }
 
     @Test
+    public void testWriteFileWithOverwriteUsersChoice() throws Exception {
+        String content = "the content";
+        Files.createFile(RESULT_PATH);
+        when(choiceResolverMock.overwriteFile()).thenReturn(true);
+        assertTrue(super.save(content.getBytes(), lppParams));
+    }
+
+    @Test
     public void testWriteFileWithOverwrite() throws Exception {
         String content = "the content";
         Files.createFile(RESULT_PATH);
         when(choiceResolverMock.overwriteFile()).thenReturn(true);
-        assertTrue(super.save(content.getBytes()));
+        when(lppParams.isOverwrite()).thenReturn(true);
+        assertTrue(super.save(content.getBytes(), lppParams));
     }
 
     @Test
     public void testWriteFileWithoutOverwrite() throws Exception {
         String content = "the content";
+        when(lppParams.isOverwrite()).thenReturn(false);
         verify(choiceResolverMock, never()).overwriteFile();
-        assertTrue(super.save(content.getBytes()));
+        assertTrue(super.save(content.getBytes(), lppParams));
     }
 
     @Test
     public void testWriteFileUserDisbandedOperation() throws Exception {
         String content = "the content";
         Files.createFile(RESULT_PATH);
+        when(lppParams.isOverwrite()).thenReturn(false);
         when(choiceResolverMock.overwriteFile()).thenReturn(false);
-        assertFalse(super.save(content.getBytes()));
+        assertFalse(super.save(content.getBytes(), lppParams));
     }
 
 
